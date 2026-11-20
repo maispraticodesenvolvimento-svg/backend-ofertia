@@ -8,7 +8,10 @@ export async function DELETE(request: Request, context: Context) {
   try {
     await requireAdmin(request);
     const { id } = await context.params;
-    const ref = realtimeDatabase.ref(`media/banners/${id}`);
+    const collection = new URL(request.url).searchParams.get("variant") === "mobile"
+      ? "mobileBanners"
+      : "banners";
+    const ref = realtimeDatabase.ref(`media/${collection}/${id}`);
     const existing = await ref.get();
     if (!existing.exists()) return Response.json({ error: "Banner não encontrado." }, { status: 404 });
     await ref.remove();

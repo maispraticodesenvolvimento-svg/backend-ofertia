@@ -2,9 +2,11 @@ import { requireAdmin } from "@/lib/require-user";
 import { apiError } from "@/lib/api-response";
 import { realtimeDatabase } from "@/lib/firebase-admin";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const snapshot = await realtimeDatabase.ref("media/banners").get();
+    const variant = new URL(request.url).searchParams.get("variant");
+    const collection = variant === "mobile" ? "mobileBanners" : "banners";
+    const snapshot = await realtimeDatabase.ref(`media/${collection}`).get();
     const values = snapshot.val() as Record<string, Record<string, unknown>> | null;
     const items = Object.entries(values ?? {})
       .map(([id, banner]) => ({ id, ...banner }))

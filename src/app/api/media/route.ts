@@ -1,7 +1,7 @@
 import { realtimeDatabase } from "@/lib/firebase-admin";
 import { requireAdmin } from "@/lib/require-user";
 
-const allowedCollections = new Set(["banners", "products"]);
+const allowedCollections = new Set(["banners", "mobileBanners", "products"]);
 const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
 export async function POST(request: Request) {
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       category?: unknown;
     };
     if (typeof collection !== "string" || !allowedCollections.has(collection)) {
-      return Response.json({ error: "collection deve ser 'banners' ou 'products'." }, { status: 400 });
+      return Response.json({ error: "collection deve ser 'banners', 'mobileBanners' ou 'products'." }, { status: 400 });
     }
     if (typeof dataUrl !== "string") {
       return Response.json({ error: "dataUrl é obrigatório." }, { status: 400 });
