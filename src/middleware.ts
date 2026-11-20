@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const localFrontendOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+const frontendOrigins = new Set([
+  "https://ofertia-web-kappa.vercel.app",
+  ...(process.env.FRONTEND_ORIGIN ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+]);
 
 export function middleware(request: NextRequest) {
   const origin = request.headers.get("origin");
-  const configuredOrigin = process.env.FRONTEND_ORIGIN;
   const allowedOrigin = origin &&
-      (origin === configuredOrigin || localFrontendOrigin.test(origin))
+      (frontendOrigins.has(origin) || localFrontendOrigin.test(origin))
     ? origin
     : null;
 
