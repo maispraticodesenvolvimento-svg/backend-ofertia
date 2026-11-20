@@ -50,3 +50,4 @@ Exemplo do corpo de `POST /api/media`:
 
 O endpoint aceita JPEG, PNG, WebP e GIF, com limite padrão de 8 MB por imagem (ajustável em `MEDIA_MAX_SIZE_MB`). O cliente Flutter deve autenticar com Firebase Authentication e enviar o ID token obtido após o login como Bearer token.
 "# backend-ofertia" 
+"# backend-ofertia" 
