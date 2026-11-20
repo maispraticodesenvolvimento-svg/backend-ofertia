@@ -22,11 +22,15 @@ export function asRecord(value: unknown): Record<string, unknown> | null {
 export function validProduct(value: Record<string, unknown>) {
   const oldPrice = value.oldPrice;
   const price = value.price;
+  const validMeasurement = (measurement: unknown) =>
+    measurement == null || (Number.isFinite(Number(measurement)) && Number(measurement) > 0);
   return typeof value.name === "string" && value.name.trim().length > 0 &&
     typeof value.category === "string" && value.category.trim().length > 0 &&
     typeof value.description === "string" &&
     (price == null || price === "" || (Number.isFinite(Number(price)) && Number(price) >= 0)) &&
     (value.stock == null || Number.isInteger(Number(value.stock))) &&
     (oldPrice == null || oldPrice === "" || (Number.isFinite(Number(oldPrice)) && Number(oldPrice) >= 0)) &&
+    validMeasurement(value.width) && validMeasurement(value.height) &&
+    validMeasurement(value.length) && validMeasurement(value.weight) &&
     (value.status === "active" || value.status === "inactive" || value.status == null);
 }
