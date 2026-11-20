@@ -50,7 +50,10 @@ export async function quoteOfferFreight(args: {
   if (!offer || offer.type !== "sell" || (offer.status != null && offer.status !== "active")) {
     throw new FreightError("Oferta de venda não encontrada ou indisponível.", 404);
   }
-  if (typeof offer.userId !== "string" || offer.userId === args.buyerUid) {
+  if (typeof offer.userId === "string" && offer.userId === args.buyerUid) {
+    throw new FreightError("Você não pode comprar a própria oferta. Entre com outra conta para continuar.", 422);
+  }
+  if (typeof offer.userId !== "string" || offer.userId.length === 0) {
     throw new FreightError("Não foi possível identificar o endereço do vendedor.", 422);
   }
 
